@@ -1,0 +1,23 @@
+[project]
+name = "csvtoxlsx"
+version = "0.1.0"
+description = "CSV 转 GBK 编码或转 Excel 文件工具"
+readme = "README.md"
+authors = [
+    { name = "dodotry", email = "dodotry@aliyun.com" }
+]
+requires-python = ">=3.14"
+dependencies = [
+    "PySide6-Fluent-Widgets>=1.6.0",
+    "loguru>=0.7.0",
+    "polars>=1.0.0",
+    "xlsxwriter>=3.2.0",
+    "openpyxl>=3.1.0",
+]
+
+[project.scripts]
+csvtoxlsx = "csvtoxlsx.main:main"
+
+[build-system]
+requires = ["uv_build>=0.12.15,<0.13.0"]
+build-backend = "uv_build"
