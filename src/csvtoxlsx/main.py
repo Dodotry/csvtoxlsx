@@ -4,7 +4,7 @@
 Author: Dodotry
 Date: 2026-09-19 21:16:02
 LastEditors: Dodotry
-LastEditTime: 2026-09-20 21:54:47
+LastEditTime: 2026-09-20 22:23:34
 '''
 """应用启动入口。"""
 import sys
@@ -19,24 +19,34 @@ from .ui.main_window import MainWindow
 MS_BLUE = "#0078D4"
 
 
-def main() -> None:
-    setup_logger()
+def install_translators(app: QApplication) -> list[QTranslator]:
+    translators: list[QTranslator] = []
 
-    app = QApplication(sys.argv)
-    app.setApplicationName("CSV 转码 / 转表格工具")
-    setThemeColor(MS_BLUE, Theme.LIGHT)
-
-    ft_translator = FluentTranslator(QLocale(QLocale.Language.Chinese, QLocale.Country.China))
+    ft_translator = FluentTranslator(
+        QLocale(QLocale.Language.Chinese, QLocale.Country.China)
+    )
     app.installTranslator(ft_translator)
+    translators.append(ft_translator)
 
     qt_translator = QTranslator(app)
     translation_path = QLibraryInfo.path(QLibraryInfo.LibraryPath.TranslationsPath)
     if qt_translator.load("qt_zh_CN.qm", translation_path):
         app.installTranslator(qt_translator)
+        translators.append(qt_translator)
+
+    return translators
+
+
+def main() -> None:
+    setup_logger()
+    app = QApplication(sys.argv)
+    app.setApplicationName("CSV 转码 / 转表格工具")
+    setThemeColor(MS_BLUE, Theme.LIGHT)
+
+    translators = install_translators(app)  # 变量必须留到 app.exec() 之后
 
     window = MainWindow()
     window.show()
-
     sys.exit(app.exec())
 
 
