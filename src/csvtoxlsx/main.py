@@ -4,47 +4,35 @@
 Author: Dodotry
 Date: 2026-09-19 21:16:02
 LastEditors: Dodotry
-LastEditTime: 2026-09-19 22:20:19
+LastEditTime: 2026-09-20 21:54:47
 '''
 """应用启动入口。"""
-
 import sys
 
 from PySide6.QtCore import QLocale, QLibraryInfo, QTranslator
 from PySide6.QtWidgets import QApplication
-from qfluentwidgets import setThemeColor, Theme
+from qfluentwidgets import setThemeColor, Theme, FluentTranslator
 
-from .core.logger import setup_logger, logger
+from .core.logger import setup_logger
 from .ui.main_window import MainWindow
 
 MS_BLUE = "#0078D4"
 
 
-def _install_translators(app: QApplication) -> None:
-    locale = QLocale.system()
-    QLocale.setDefault(locale)
-    app.setLayoutDirection(locale.textDirection())
-
-    translations_dir = QLibraryInfo.path(QLibraryInfo.TranslationsPath)
-    loc_name = locale.name()
-    logger.info("系统本地语言: {}", loc_name)
-    for prefix in ("qt_", "qtbase_"):
-        name = prefix + loc_name
-        translator = QTranslator(app)
-        if translator.load(name, translations_dir):
-            app.installTranslator(translator)
-            logger.info("已加载翻译: {}", name)
-        else:
-            logger.warning("加载翻译失败: {}", name)
-
-
 def main() -> None:
     setup_logger()
 
-    app = QApplication([])
+    app = QApplication(sys.argv)
     app.setApplicationName("CSV 转码 / 转表格工具")
     setThemeColor(MS_BLUE, Theme.LIGHT)
-    _install_translators(app)
+
+    ft_translator = FluentTranslator(QLocale(QLocale.Language.Chinese, QLocale.Country.China))
+    app.installTranslator(ft_translator)
+
+    qt_translator = QTranslator(app)
+    translation_path = QLibraryInfo.path(QLibraryInfo.LibraryPath.TranslationsPath)
+    if qt_translator.load("qt_zh_CN.qm", translation_path):
+        app.installTranslator(qt_translator)
 
     window = MainWindow()
     window.show()
