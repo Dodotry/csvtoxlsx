@@ -6,6 +6,7 @@
 - 下方：信息框（实时显示处理日志）
 转换按钮图标随当前模式实时切换。
 """
+
 from pathlib import Path
 
 from PySide6.QtCore import Qt, Signal, QObject
@@ -130,7 +131,7 @@ class MainWindow(MSFluentWindow):
 
         row = QHBoxLayout()
         row.setSpacing(20)
-        self.radio_gbk = RadioButton("转码 (CSV → GBK)")
+        self.radio_gbk = RadioButton("转码 (UTF8 → GBK)")
         self.radio_excel = RadioButton("转表格 (CSV → XLSX)")
         self.radio_gbk.setChecked(True)
         self.group = QButtonGroup(self)

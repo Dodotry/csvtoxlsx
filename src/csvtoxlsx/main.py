@@ -4,7 +4,7 @@
 Author: Dodotry
 Date: 2026-09-19 21:16:02
 LastEditors: Dodotry
-LastEditTime: 2026-09-20 22:23:34
+LastEditTime: 2026-09-21 22:27:48
 '''
 """应用启动入口。"""
 import sys
@@ -34,9 +34,10 @@ def install_translators(app: QApplication) -> list[QTranslator]:
         app.installTranslator(qt_translator)
         translators.append(qt_translator)
 
+
     return translators
 
-
+    
 def main() -> None:
     setup_logger()
     app = QApplication(sys.argv)

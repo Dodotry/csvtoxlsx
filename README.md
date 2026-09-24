@@ -90,3 +90,19 @@ src/csvtoxlsx/
 
 - `xlsxwriter`：polars 的 `write_excel` 需要，用于生成 `.xlsx`
 - `openpyxl`：用于读取/校验生成的 `.xlsx` 文件
+
+
+
+
+```powershell
+
+FROM ./Bonsai-27B-Q1_0.gguf
+PARAMETER num_ctx 65536
+PARAMETER num_gpu 99
+
+
+ollama create bonsai27b -f Modelfile
+ollama run bonsai27b
+
+
+```
